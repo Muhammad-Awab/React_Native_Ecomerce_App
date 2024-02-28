@@ -9,14 +9,14 @@ import AuthContext from "../features/authContext";
 
 const OrderScreen = ({ navigation }) => {
   const { orders, setOrders } = useContext(OrderContext);
-  const {isLoggedIn} = useContext(AuthContext)
+  const { isLoggedIn } = useContext(AuthContext)
 
   const fetchAllOrders = async () => {
     const res = await getAllOrderItems();
-    console.log("Mavgatasdassdaaaaaaa",res.data)
+    console.log("Mavgatasdassdaaaaaaa", res.data)
     if (res.success === true) {
       setOrders(res.data);
-      console.log("res.data",res.data)
+      console.log("res.data", res.data)
     }
   };
 
@@ -27,24 +27,24 @@ const OrderScreen = ({ navigation }) => {
     fetchAllOrders();
   }, []);
   return (
-    <SafeAreaView className="flex-1 w-full p-5 bg-white">
+    <SafeAreaView className="flex-1 w-full p-5 mt-0 bg-white">
       <View>
         <Text className="font-bold text-xl">My Orders</Text>
       </View>
       {isLoggedIn
-      ?
-      <ScrollView className="mt-4 pt-4 " showsVerticalScrollIndicator={false}>
-        {orders?.map((order) => (
-          <OrderItem key={order.id} brand={order.brand} qty={order.qty}
-           title={order.title} date={order.date} orderId={order.orderId} 
-          image={order.image} price={order.price}  />
+        ?
+        <ScrollView className="mt-4 pt-4 " showsVerticalScrollIndicator={false}>
+          {orders?.map((order) => (
+            <OrderItem key={order.id} brand={order.brand} qty={order.qty}
+              title={order.title} date={order.date} orderId={order.orderId}
+              image={order.image} price={order.price} />
           ))}
-      </ScrollView>
-      :
-      <View className="flex-1 items-center justify-center ">
-        <Text className="font-bold text-lg">Login to view your Orders!</Text>
-      </View>
-        }
+        </ScrollView>
+        :
+        <View className="flex-1 items-center justify-center ">
+          <Text className="font-bold text-lg">Login to view your Orders!</Text>
+        </View>
+      }
     </SafeAreaView>
   );
 };

@@ -27,7 +27,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <SafeAreaView className="bg-white h-full p-6 justify-between">
       <View>
-        <View className="mt-16 justify-center items-center">
+        <View className="justify-center items-center">
           <View className="border border-slate-200 rounded-lg">
             <Image source={User} className="h-32 w-32 object-cover" />
           </View>
@@ -66,7 +66,7 @@ const ProfileScreen = ({ navigation }) => {
               <View className="mt-5 pl-6 pr-6">
                 <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center' }}
-                  onPress={() => navigation.navigate('order-screen')}
+                  onPress={() => navigation.navigate('orderscreen')}
                 >
                   <Text style={{ fontSize: 18, fontWeight: 'bold' }}>My Products</Text>
                 </TouchableOpacity>

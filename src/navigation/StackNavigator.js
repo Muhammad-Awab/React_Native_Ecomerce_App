@@ -25,6 +25,7 @@ const MainStackNavigator = () => {
             <Stack.Screen name='homescreen' component={HomeScreen} />
             <Stack.Screen name='accountscreen' component={AccountScreen} />
             <Stack.Screen name='detailscreen' component={DetailScreen} />
+            <Stack.Screen name='orderscreen' component={DetailScreen} />
             <Stack.Screen name='productlistscreen' component={ProductListScreen} />
         </Stack.Navigator>
     )
@@ -79,7 +80,7 @@ const AccountStackNavigator = () => {
 const OrderStackNavigator = () => {
     return (
         <Stack.Navigator
-            initialRouteName='order-screen'
+            initialRouteName='orderscreen'
             screenOptions={{
                 headerStyle: {
                     backgroundColor: "#91c4f8"
@@ -87,7 +88,7 @@ const OrderStackNavigator = () => {
                 headerShown: false
             }}
         >
-            <Stack.Screen name='order-screen' component={OrderScreen} />
+            <Stack.Screen name='orderscreen' component={OrderScreen} />
         </Stack.Navigator>
     )
 }

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Button, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import TabNavigator from "./src/navigation/TabNavigator";
 import { useState } from "react";
@@ -7,6 +7,9 @@ import { AuthProvider } from "./src/features/authContext";
 import { ProductProvider } from "./src/features/productContext";
 import { CartProvider } from "./src/features/cartContext";
 import { OrderProvider } from "./src/features/orderContext";
+
+import DrawerNavigator from "./src/navigation/DrawerNavigator";
+
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +20,7 @@ export default function App() {
   const [orders, setOrders] = useState(null);
 
   return (
+
     <AuthProvider
       value={{ isLoggedIn, setIsLoggedIn, currentUser, setCurrentUser }}
     >
@@ -25,12 +29,12 @@ export default function App() {
       >
         <CartProvider value={{ cartItems, setCartItems }}>
           <OrderProvider value={{ orders, setOrders }}>
-            <NavigationContainer>
-              <TabNavigator />
-            </NavigationContainer>
+            <DrawerNavigator />
+
           </OrderProvider>
         </CartProvider>
       </ProductProvider>
     </AuthProvider>
+
   );
 }
