@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     padding: 10,
-    justifyContent: "left",
-    alignItems: "left",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -35,7 +33,6 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flexDirection: "row",
-    alignItems: "left",
   },
   imageContainer: {
     marginRight: 10,

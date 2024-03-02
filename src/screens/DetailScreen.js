@@ -73,16 +73,16 @@ const DetailScreen = ({ navigation, route }) => {
               </Pressable>
             </View>
           </View>
-          <ScrollView style={{ maxHeight: 120 }}>
-            <View>
-              <Text style={{ color: "gray", marginBottom: -4 }}>Total Price</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 10 }}>${product?.price}</Text>
-            </View>
-            <Pressable onPress={addItemToCart} style={styles.addButton}>
-              <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>Add to Cart</Text>
-            </Pressable>
-            <Text style={{ color: "gray", marginTop: 10 }}>{product?.description}</Text>
-          </ScrollView>
+
+          <View>
+            <Text style={{ color: "gray", marginBottom: -4 }}>Total Price</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 10 }}>${product?.price}</Text>
+          </View>
+          <Pressable onPress={addItemToCart} style={styles.addButton}>
+            <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>Add to Cart</Text>
+          </Pressable>
+          <Text style={{ color: "gray", marginTop: 10 }}>{product?.description}</Text>
+
         </View>
       </ScrollView>
 
