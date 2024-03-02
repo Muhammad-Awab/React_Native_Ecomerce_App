@@ -1,20 +1,46 @@
-import { StyleSheet, Text, View,Image } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
-import Bag from "../../assets/bag.png"
 
-const NewArrivalsCard = ({title,brand,price,image}) => {
+const NewArrivalsCard = ({ title, brand, price, image }) => {
   return (
-    <View className="max-w-[150px] justify-center items-center overflow-hidden mr-6">
-      <Image source={{uri:image}} className="rounded-xl  h-36 w-32" />
-      <View className="mt-2 justify-center items-center">
-      <Text className="font-bold">{title}</Text>
-      <Text className="text-xs">{brand}</Text>
-      <Text className="font-extrabold">${price}</Text>
+    <View style={styles.container}>
+      <Image source={{ uri: image }} style={styles.image} />
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.brand}>{brand}</Text>
+        <Text style={styles.price}>${price}</Text>
       </View>
     </View>
   )
 }
 
-export default NewArrivalsCard
+const styles = StyleSheet.create({
+  container: {
+    maxWidth: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    marginRight: 6,
+  },
+  image: {
+    borderRadius: 10,
+    height: 150,
+    width: 120,
+  },
+  detailsContainer: {
+    marginTop: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+  brand: {
+    fontSize: 12,
+  },
+  price: {
+    fontWeight: 'bold',
+  },
+})
 
-const styles = StyleSheet.create({})
+export default NewArrivalsCard

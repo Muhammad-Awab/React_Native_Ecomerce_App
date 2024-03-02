@@ -1,42 +1,74 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 
-const OrderItem = ({orderId,title,image,brand,date,price,qty}) => {
+const OrderItem = ({ orderId, title, image, brand, date, price, qty }) => {
   return (
-
-    <View  className="bg-white justify-center items-center rounded-lg w-full
-     mb-2 border border-slate-200" >
-    <View className="flex-row justify-center items-center">
-      <View className="p-2 items-center justify-center">
-        <Image source={{uri:image}} className="rounded-xl h-24 w-24 object-contain" />
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: image }} style={styles.image} />
       </View>
-      <View className="flex-1 flex-row  justify-between items-center w-[100%] pl-2">
-        <View>
-          <Text className="font-bold">{title}</Text>
-          <Text className="text-xs mt-1">{brand}</Text>
-          <Text className="text-xs">Quantity: {qty}</Text>
-          <Text className="text-xs">Date: {date}</Text>
-          <Text className="text-xs">OrderId: <Text className="font-semibold">#{orderId}</Text></Text>
-        </View>
-        <View className="flex-row  px-3 h-8 justify-center items-center">
-          <Text className="font-extrabold">${price}</Text>
-        </View>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.brand}>{brand}</Text>
+        <Text style={styles.info}>Quantity: {qty}</Text>
+        <Text style={styles.info}>Date: {date}</Text>
+        <Text style={styles.info}>OrderID: <Text style={styles.orderId}>#{orderId}</Text></Text>
       </View>
+      <View style={styles.priceContainer}>
+        <Text style={styles.price}>${price}</Text>
       </View>
     </View>
-
   );
 };
 
-export default OrderItem;
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 2,
+    borderWidth: 1,
+    borderColor: "#dcdcdc",
+    borderRadius: 10,
+    flexDirection: "row",
+  },
+  imageContainer: {
+    padding: 10,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+  },
+  detailsContainer: {
+    flex: 1,
+    paddingHorizontal: 10,
+    justifyContent: "center",
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  brand: {
+    fontSize: 14,
+    marginTop: 1,
+  },
+  info: {
+    fontSize: 12,
+    marginTop: 1,
+  },
+  orderId: {
+    fontWeight: "bold",
+  },
+  priceContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  price: {
+    fontWeight: "bold",
+  },
+});
 
-const styles=StyleSheet.create({
-    card: {
-        
-      },
-      shadowProp: {
-        shadowColor: '#111',
-        elevation:6,
-        shadowRadius:20
-      },
-})
+export default OrderItem;

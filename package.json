@@ -21,6 +21,7 @@
     "firebase": "^9.22.1",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
+    "react-devtools": "^5.0.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
     "react-native-drop-shadow": "^0.0.7",

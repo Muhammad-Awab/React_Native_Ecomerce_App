@@ -93,7 +93,7 @@ function CustomDrawerContent(props) {
 const DrawerNavigator = () => {
     return (
         <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
-            <Drawer.Screen name="Main" component={TabNavigator} />
+            <Drawer.Screen name="Smart E-comm" component={TabNavigator} />
         </Drawer.Navigator>
     );
 }

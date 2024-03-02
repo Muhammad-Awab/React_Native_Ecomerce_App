@@ -1,10 +1,9 @@
-import { Pressable, View, ScrollView, Text } from "react-native";
 import React, { useEffect, useContext } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, ScrollView, Pressable, Text, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ProductItem from "../components/ProductItem";
 import ProductContext from "../features/productContext";
-import { getProducts } from "../features/firebase/product"; // Import getProducts function
+import { getProducts } from "../features/firebase/product";
 
 const ProductListScreen = ({ navigation }) => {
   const { products, setProducts } = useContext(ProductContext);
@@ -23,10 +22,7 @@ const ProductListScreen = ({ navigation }) => {
       headerShown: true,
       headerTitle: "Products",
       headerLeft: () => (
-        <Pressable
-          onPress={goBack}
-          className=" justify-center items-center h-10 w-10 mx-4 rounded-full "
-        >
+        <Pressable onPress={goBack} style={styles.headerButton}>
           <MaterialIcons name="chevron-left" size={34} color={"#111"} />
         </Pressable>
       ),
@@ -34,16 +30,22 @@ const ProductListScreen = ({ navigation }) => {
         backgroundColor: "white",
       },
       headerTitleAlign: "center",
-    }),
-      fetchAllProducts();
+    });
+    fetchAllProducts();
   }, []);
+
   return (
-    <SafeAreaView className="flex-1 w-full px-4 bg-white">
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {products?.map((product) => (
-          <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen",{
-            productId:product?.id
-          })}>
+          <Pressable
+            key={product.id}
+            onPress={() =>
+              navigation.navigate("detailscreen", {
+                productId: product?.id,
+              })
+            }
+          >
             <ProductItem
               title={product?.title}
               image={product?.image}
@@ -57,4 +59,20 @@ const ProductListScreen = ({ navigation }) => {
   );
 };
 
+const styles = {
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: "white",
+  },
+  headerButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    width: 50,
+    marginHorizontal: 10,
+  },
+};
+
 export default ProductListScreen;
+

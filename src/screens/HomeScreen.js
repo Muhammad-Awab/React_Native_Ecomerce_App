@@ -1,6 +1,5 @@
-import { Text, View, Image, ScrollView, Pressable } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { TextInput } from "react-native-gesture-handler";
+import { Text, View, Image, ScrollView, Pressable, TextInput, StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import UserLogo from "../../assets/user.png";
 import OfferCard from "../components/OfferCard";
@@ -15,94 +14,155 @@ const Home = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { isLoggedIn, currentUser } = useContext(AuthContext);
   const { products, setProducts } = useContext(ProductContext);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchAllProducts = async () => {
     const result = await getProducts();
-
-    setProducts(result)
-  }
+    setProducts(result);
+  };
 
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
-
-    fetchAllProducts()
+    fetchAllProducts();
   }, []);
-  return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView>
 
-        <View className="flex-row justify-between items-center px-5">
-          <View className="px-5">
-            <Text className="font-bold text-2xl">Welcome, <Text className="font-bold text-slate-500">{currentUser?.name}</Text></Text>
-            <Text className="font-semibold text-xl text-gray-500">
-              Our Fashions App
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.welcomeText}>
+              Welcome, <Text style={styles.username}>{currentUser?.name}</Text>
             </Text>
+            <Text style={styles.appName}>Our Fashion App</Text>
           </View>
           {!isLoggedIn && (
-            <Pressable onPress={() => setModalVisible(!modalVisible)} className="flex-row items-center justify-center border border-slate-400 rounded-full ">
+            <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.loginButton}>
               <Image
                 source={UserLogo}
-                style={{
-                  height: 40,
-                  width: 40,
-                  backgroundColor: "#aaaaaa",
-                  borderRadius: 50,
-                }}
+                style={styles.userLogo}
               />
-              <Text className="font-semibold py-2 pr-4 pl-2">Login</Text>
+              <Text style={styles.loginText}>Login</Text>
             </Pressable>
           )}
-
-
         </View>
 
-        <View className="mt-6 px-5">
-          <View className="flex-row bg-gray-200 p-2 px-3 items-center rounded-3xl">
-            <View className="">
-              <MaterialIcons name="search" size={24} color={"#111"} />
-            </View>
-            <TextInput
-              placeholder="Search..."
-              placeholderTextColor={"#666666"}
-              className="px-2"
-            />
-          </View>
+        <View style={styles.searchContainer}>
+          <MaterialIcons name="search" size={24} color={"#111"} />
+          <TextInput
+            placeholder="Search..."
+            placeholderTextColor={"#666666"}
+            style={styles.searchInput}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
         </View>
 
-        <View className="mt-6 p-5">
+        <View style={styles.offerSection}>
           <OfferCard />
         </View>
-        <View className="mt-4">
-          <View className="flex-row justify-between items-center px-5">
-            <Text className="text-lg font-extrabold">New Arrivals</Text>
+
+        <View style={styles.newArrivalsSection}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionHeaderText}>New Arrivals</Text>
             <Pressable onPress={() => navigation.navigate("productlistscreen")}>
-              <Text className="text-xs text-gray-500">View All</Text>
+              <Text style={styles.viewAllText}>View All</Text>
             </Pressable>
           </View>
-          <ScrollView
-            className="mt-4 ml-5"
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {products?.map(product =>
-              <Pressable key={product.id}
-                onPress={() => navigation.navigate("detailscreen",
-                  { productId: product.id })}>
+              <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
                 <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
               </Pressable>
             )}
-
           </ScrollView>
         </View>
-        <AuthenticationModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
+        <AuthenticationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  username: {
+    color: '#0066CC',
+  },
+  appName: {
+    fontSize: 18,
+    color: '#666666',
+  },
+  loginButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderColor: '#CCCCCC',
+  },
+  userLogo: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    marginRight: 5,
+  },
+  loginText: {
+    fontWeight: 'bold',
+    color: '#0066CC',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 30,
+    marginBottom: 20,
+    marginHorizontal: 20,
+    paddingVertical: 5,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  offerSection: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  newArrivalsSection: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  sectionHeaderText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  viewAllText: {
+    color: '#0066CC',
+    fontSize: 16,
+  },
+});
 
 export default Home;
