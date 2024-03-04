@@ -15,10 +15,12 @@ const Home = ({ navigation }) => {
   const { isLoggedIn, currentUser } = useContext(AuthContext);
   const { products, setProducts } = useContext(ProductContext);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const fetchAllProducts = async () => {
     const result = await getProducts();
     setProducts(result);
+    setFilteredProducts(result); //initially set filteredproducts to all fetched products
   };
 
   useEffect(() => {
@@ -27,6 +29,13 @@ const Home = ({ navigation }) => {
     });
     fetchAllProducts();
   }, []);
+
+  useEffect(() => {
+    const filtered = products.filter(product =>
+      product.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  }, [searchQuery, products]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,7 +81,7 @@ const Home = ({ navigation }) => {
             </Pressable>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {products?.map(product =>
+            {filteredProducts.map(product =>
               <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
                 <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
               </Pressable>
