@@ -44,6 +44,7 @@ const DetailScreen = ({ navigation, route }) => {
 
   const fetchProductById = async (id) => {
     const result = await getProductById(id);
+    console.log(result)
     setCurrentProduct(result);
   }
 

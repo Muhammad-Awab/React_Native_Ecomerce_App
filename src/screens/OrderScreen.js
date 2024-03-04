@@ -1,4 +1,4 @@
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
 import React, { useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrderItem from "../components/OrderItem";
@@ -14,30 +14,26 @@ const OrderScreen = ({ navigation }) => {
     const res = await getAllOrderItems();
     if (res.success === true) {
       setOrders(res.data);
-      
     }
   };
 
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: false,
-  //   });
-   
-  // }, []);
-  useEffect(()=>{
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
     fetchAllOrders();
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, padding: 5, backgroundColor: "#ffffff" }}>
-      <View>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>My Orders</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>My Orders</Text>
       </View>
       {isLoggedIn ? (
-        <ScrollView style={{ marginTop: 10 }} showsVerticalScrollIndicator={false}>
-          {orders?.map((order) => (
+        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {orders?.map((order, index) => (
             <OrderItem
-              key={order.id}
+              key={`${order.orderId}-${index}`} // Combine orderId with index
               brand={order.brand}
               qty={order.qty}
               title={order.title}
@@ -49,12 +45,39 @@ const OrderScreen = ({ navigation }) => {
           ))}
         </ScrollView>
       ) : (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>Login to view your Orders!</Text>
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Login to view your Orders!</Text>
         </View>
       )}
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 5,
+    backgroundColor: "#ffffff",
+  },
+  header: {
+    padding: 10,
+  },
+  headerText: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  scrollView: {
+    marginTop: 10,
+  },
+  loginContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginText: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },  
+});
 
 export default OrderScreen;
