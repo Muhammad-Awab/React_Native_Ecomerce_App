@@ -17,13 +17,15 @@ const OrderScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerShown: false,
+  //   });
+   
+  // }, []);
+  useEffect(()=>{
     fetchAllOrders();
-  }, []);
-
+  })
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
