@@ -31,13 +31,16 @@ const DetailScreen = ({ navigation, route }) => {
     navigation.goBack();
   }
 
+
   const addItemToCart = async () => {
-    const res = await addToCart(id, qty);
+    const res = await addToCart(id, qty)
     if (res.success === true) {
-      ToastAndroid.show("Item added to cart", ToastAndroid.BOTTOM);
-      setCurrentProduct(res.data);
+      ToastAndroid.show("item added to cart", ToastAndroid.BOTTOM)
+      console.log("f", res.data)
+      setCartItems(res.data)
     }
   }
+
 
   const fetchProductById = async (id) => {
     const result = await getProductById(id);

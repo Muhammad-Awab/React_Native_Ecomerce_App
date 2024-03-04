@@ -34,7 +34,7 @@ const Cart = ({ navigation }) => {
       headerShown: false,
     });
     fetchCartItems();
-  }, [currentUser, cartItems?.length]);
+  }, [currentUser, cartItems?.length, cartItems, getCartItems]);
 
   return (
     <SafeAreaView style={styles.container}>
