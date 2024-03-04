@@ -21,10 +21,10 @@ const TotalSummaryCard = ({ totalPrice }) => {
   const placeOrder = async () => {
     const res = await addToOrders();
     if (res.success === true) {
-      ToastAndroid.show("Order placed successfully!!!", ToastAndroid.BOTTOM)
       setCartItems([]);
+      ToastAndroid.show("Order placed successfully!!!", ToastAndroid.BOTTOM)
       // Instead of setting orderItems directly, fetch updated orders and update the state
-      fetchAllOrders(); // Fetch updated orders
+      // fetchAllOrders(); // Fetch updated orders
     }
   }
 

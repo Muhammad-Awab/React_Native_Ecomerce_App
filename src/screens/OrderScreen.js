@@ -14,7 +14,7 @@ const OrderScreen = ({ navigation }) => {
     const res = await getAllOrderItems();
     if (res.success === true) {
       setOrders(res.data);
-      console.log("res.data", res.data);
+      
     }
   };
 
