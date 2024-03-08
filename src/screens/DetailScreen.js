@@ -36,7 +36,6 @@ const DetailScreen = ({ navigation, route }) => {
     const res = await addToCart(id, qty)
     if (res.success === true) {
       ToastAndroid.show("item added to cart", ToastAndroid.BOTTOM)
-     
       setCartItems(res.data)
     }
   }

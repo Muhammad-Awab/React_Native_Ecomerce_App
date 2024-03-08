@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Text, View, Image, StyleSheet, TouchableOpacity, Pressable, ToastAndroid } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import User from "../../assets/user.png";
 import AuthContext from "../features/authContext";
 import { logout } from "../features/firebase/userAuth";
+
+import { getDoc, doc } from "firebase/firestore";
 
 const account = require("../../assets/icon.png");
 const help = require("../../assets/icon.png");
@@ -21,6 +23,23 @@ const ProfileScreen = ({ navigation }) => {
       setCurrentUser(null);
     }
   };
+
+  // Inside ProfileScreen component
+  const [profilePicUrl, setProfilePicUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      if (currentUser) {
+        const userRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userRef);
+        const userData = userDoc.data();
+        setProfilePicUrl(userData.profilePicUrl);
+      }
+    };
+
+    fetchProfilePic();
+  }, [currentUser]);
+
 
   return (
     <SafeAreaView style={styles.container}>

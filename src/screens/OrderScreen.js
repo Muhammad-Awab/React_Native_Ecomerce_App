@@ -14,7 +14,7 @@ const OrderScreen = ({ navigation }) => {
     const res = await getAllOrderItems();
     if (res.success === true) {
       setOrders(res.data);
-      
+
     }
   };
 
@@ -22,9 +22,9 @@ const OrderScreen = ({ navigation }) => {
   //   navigation.setOptions({
   //     headerShown: false,
   //   });
-   
+
   // }, []);
-  useEffect(()=>{
+  useEffect(() => {
     fetchAllOrders();
   });
 
@@ -35,9 +35,9 @@ const OrderScreen = ({ navigation }) => {
       </View>
       {isLoggedIn ? (
         <ScrollView style={{ marginTop: 10 }} showsVerticalScrollIndicator={false}>
-          {orders?.map((order) => (
+          {orders?.map((order, index) => (
             <OrderItem
-              key={order.id}
+              key={`${order.orderId}_${index}`}
               brand={order.brand}
               qty={order.qty}
               title={order.title}
@@ -47,6 +47,7 @@ const OrderScreen = ({ navigation }) => {
               price={order.price}
             />
           ))}
+
         </ScrollView>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
