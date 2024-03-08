@@ -15,7 +15,9 @@
 
 import React, { createContext, useState } from 'react';
 
+
 const ProductContext = createContext();
+
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]); // Initialize products with an empty array
@@ -23,9 +25,10 @@ export const ProductProvider = ({ children }) => {
 
   return (
     <ProductContext.Provider value={{ products, setProducts, currentProduct, setCurrentProduct }}>
-      {children}
-    </ProductContext.Provider>
-  );
+      <ProductContext.Provider value={{ products, setProducts, currentProduct, setCurrentProduct }}>
+        {children}
+      </ProductContext.Provider>
+      );
 };
 
-export default ProductContext;
+      export default ProductContext;
