@@ -14,19 +14,6 @@ const OrderScreen = ({ navigation }) => {
     const res = await getAllOrderItems();
     if (res.success === true) {
       setOrders(res.data);
-<<<<<<< HEAD
-
-    }
-  };
-
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: false,
-  //   });
-
-  // }, []);
-  useEffect(() => {
-=======
     }
   };
 
@@ -34,7 +21,6 @@ const OrderScreen = ({ navigation }) => {
     navigation.setOptions({
       headerShown: false,
     });
->>>>>>> 4df307a98ad585f06209c677160409300a90f6d5
     fetchAllOrders();
   });
 
@@ -44,17 +30,10 @@ const OrderScreen = ({ navigation }) => {
         <Text style={styles.headerText}>My Orders</Text>
       </View>
       {isLoggedIn ? (
-<<<<<<< HEAD
-        <ScrollView style={{ marginTop: 10 }} showsVerticalScrollIndicator={false}>
-          {orders?.map((order, index) => (
-            <OrderItem
-              key={`${order.orderId}_${index}`}
-=======
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {orders?.map((order, index) => (
             <OrderItem
               key={`${order.orderId}-${index}`} // Combine orderId with index
->>>>>>> 4df307a98ad585f06209c677160409300a90f6d5
               brand={order.brand}
               qty={order.qty}
               title={order.title}
@@ -99,7 +78,7 @@ const styles = StyleSheet.create({
   loginText: {
     fontWeight: "bold",
     fontSize: 18,
-  },  
+  },
 });
 
 export default OrderScreen;
