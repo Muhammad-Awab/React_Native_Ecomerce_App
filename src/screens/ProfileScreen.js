@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import User from "../../assets/user.png";
 import AuthContext from "../features/authContext";
 import { logout } from "../features/firebase/userAuth";
+import { db } from '../../firebase';
 
 import { getDoc, doc } from "firebase/firestore";
 
