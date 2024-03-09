@@ -361,11 +361,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
 import AuthContext from '../features/authContext';
-import { reauthenticateWithCredential, updatePassword } from "firebase/auth";
+import { reauthenticateWithCredential, updatePassword, getAuth, getIdToken } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { auth, getIdTokenResult, initializeRecaptchaConfig, EmailAuthCredential, EmailAuthProvider } from 'firebase/auth';
+import { getIdTokenResult, updatePasswordInDatabase, initializeRecaptchaConfig, RecaptchaParameters, EmailAuthCredential, EmailAuthProvider } from 'firebase/auth';
 import { db } from '../../firebase';
-
 
 const AccountScreen = () => {
     const { currentUser } = useContext(AuthContext);
@@ -383,7 +382,7 @@ const AccountScreen = () => {
     useEffect(() => {
         if (currentUser) {
             // Update state with current user's details
-            setName(currentUser.displayName || '');
+            setName(currentUser.name || '');
             setEmail(currentUser.email || '');
             // Assuming age is stored in the user's custom claims or database, fetch it accordingly
             const fetchUserDetails = async () => {
@@ -417,8 +416,13 @@ const AccountScreen = () => {
     };
 
     const handleChangePassword = async () => {
+
+        const auth = getAuth();
+
+        // Obtain the current user from the auth object
+        const user = auth.currentUser;
+
         if (!currentUser) {
-            // currentUser is not defined, handle accordingly
             console.error("Current user not found.");
             return;
         }
@@ -428,20 +432,18 @@ const AccountScreen = () => {
         }
 
         try {
-            const credentials = EmailAuthProvider.credential(currentUser.email, currentPassword);
-            await reauthenticateWithCredential(currentUser, credentials);
-            await updatePassword(currentUser, newPassword);
+            // Update the password using Firebase Authentication
+            await updatePassword(user, newPassword);
+            console.log('Password updated successfully');
 
             setErrorMessage('');
             setNewPassword('');
             setConfirmPassword('');
             setCurrentPassword('');
             setModalVisible(false);
-
-            // Handle success
         } catch (error) {
             console.error("Error updating password:", error);
-            setErrorMessage("Failed to update password. Please make sure your current password is correct.");
+            setErrorMessage("Failed to update password. " + error.message);
         }
     };
 
@@ -450,7 +452,6 @@ const AccountScreen = () => {
             <Text style={styles.title}>Account Details</Text>
             <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="Name" />
             <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
-            <TextInput style={styles.input} value={age} onChangeText={setAge} placeholder="Age" keyboardType="numeric" />
             <Button title="Save Changes" onPress={handleSave} />
             <Button title="Change Password" onPress={() => setModalVisible(true)} />
             <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>

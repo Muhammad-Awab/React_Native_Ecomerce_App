@@ -26,8 +26,8 @@ const windowWidth = Dimensions.get('window').width;
 const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
   const [type, setType] = useState("login");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("shaheer@gmail.com");
-  const [password, setPassword] = useState("12345678");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
 
