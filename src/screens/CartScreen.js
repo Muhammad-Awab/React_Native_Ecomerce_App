@@ -43,9 +43,9 @@ const Cart = ({ navigation }) => {
       </View>
       {isLoggedIn ? (
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          {cartItems?.map((item) => (
+          {cartItems?.map((item,index) => (
             <CartItem
-              key={item.id}
+            key={`${item.id}-${index}`}
               id={item.id}
               title={item.title}
               brand={item.brand}
