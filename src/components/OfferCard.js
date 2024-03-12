@@ -4,25 +4,73 @@ import Suit from "../../assets/suit.png";
 
 const OfferCard = () => {
   return (
-    <View className="flex-row max-w-[250px] py-2 mr-6 max-h-[160px] overflow-hidden bg-[#c7c7c7] rounded-2xl">
-      <View className="px-4 py-2">
-        <Text className="font-extrabold text-2xl">50% Off</Text>
-        <Text className="text-lg">On everything today</Text>
-        <Text className="text-xs my-2">With code: FSCREATION</Text>
-
-        <Pressable className="bg-black w-20 rounded-2xl">
-          <Text className="text-white text-xs font-semibold mx-3 my-1">
-            Get Now
-          </Text>
+    <View style={styles.container}>
+      <View style={styles.textContainer}>
+        <Text style={styles.offerText}>50% Off</Text>
+        <Text style={styles.offerDescription}>On everything today</Text>
+        <Text style={styles.offerCode}>With code: FSCREATION</Text>
+        <Pressable style={styles.button}>
+          <Text style={styles.buttonText}>Get Now</Text>
         </Pressable>
       </View>
-      <View>
-        <Image source={Suit} className="object-contain h-[150px] w-[55px]" />
+      <View style={styles.imageContainer}>
+        <Image source={Suit} style={styles.image} />
       </View>
     </View>
   );
 };
 
-export default OfferCard;
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    maxWidth: 250,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginRight: 6,
+    maxHeight: 160,
+    overflow: "hidden",
+    backgroundColor: "#c7c7c7",
+    borderRadius: 20,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 16,
+  },
+  offerText: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  offerDescription: {
+    fontSize: 16,
+  },
+  offerCode: {
+    fontSize: 12,
+    marginVertical: 4,
+  },
+  button: {
+    backgroundColor: "black",
+    width: 60,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+    marginHorizontal: 8,
+    marginVertical: 4,
+  },
+  imageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 55,
+    height: 150,
+    resizeMode: "contain",
+  },
+});
 
-const styles = StyleSheet.create({});
+export default OfferCard;

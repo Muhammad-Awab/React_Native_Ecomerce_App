@@ -1,4 +1,4 @@
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CartItem from "../components/CartItem";
@@ -14,7 +14,7 @@ const Cart = ({ navigation }) => {
 
   const calculateTotalAmount = async (data) => {
     const subTotal = await data.reduce(
-      (acc, item) => acc + (Number(item.price)*Number(item.qty)),
+      (acc, item) => acc + Number(item.price) * Number(item.qty),
       0
     );
     setTotal(subTotal.toFixed(2));
@@ -34,37 +34,65 @@ const Cart = ({ navigation }) => {
       headerShown: false,
     });
     fetchCartItems();
-  }, [currentUser, cartItems?.length]);
+  }, [currentUser, cartItems?.length, cartItems, getCartItems]);
+
   return (
-    <SafeAreaView className="flex-1 w-full p-5 bg-white">
-      <View>
-        <Text className="font-bold text-xl">My Cart</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>My Cart</Text>
       </View>
       {isLoggedIn ? (
-          <ScrollView className="mt-4 " showsVerticalScrollIndicator={false}>
-            {cartItems?.map((item) => (
-              <CartItem
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                brand={item.brand}
-                qty={item.qty}
-                image={item.image}
-                price={item.price}
-              />
-            ))}
-          </ScrollView>
-
+        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {cartItems?.map((item,index) => (
+            <CartItem
+            key={`${item.id}-${index}`}
+              id={item.id}
+              title={item.title}
+              brand={item.brand}
+              qty={item.qty}
+              image={item.image}
+              price={item.price}
+            />
+          ))}
+        </ScrollView>
       ) : (
-        <View className="flex-1 items-center justify-center ">
-          <Text className="font-bold text-lg">Login to view your Cart!</Text>
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Login to view your Cart!</Text>
         </View>
       )}
-          <View>
-            <TotalSummaryCard totalPrice={total} />
-          </View>
+      <View>
+        <TotalSummaryCard totalPrice={total} />
+      </View>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "white",
+  },
+  header: {
+    marginBottom: 10,
+  },
+  headerText: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  scrollView: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  loginContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loginText: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+});
 
 export default Cart;
