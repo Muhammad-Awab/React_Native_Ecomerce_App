@@ -81,7 +81,14 @@ const Home = ({ navigation }) => {
             </Pressable>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {filteredProducts.map(product =>
+            {filteredProducts.slice(0, Math.ceil(filteredProducts.length / 2)).map(product =>
+              <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
+                <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
+              </Pressable>
+            )}
+          </ScrollView>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {filteredProducts.slice(Math.ceil(filteredProducts.length / 2)).map(product =>
               <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
                 <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
               </Pressable>
