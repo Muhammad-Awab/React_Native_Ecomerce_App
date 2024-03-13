@@ -15,10 +15,12 @@ const Home = ({ navigation }) => {
   const { isLoggedIn, currentUser } = useContext(AuthContext);
   const { products, setProducts } = useContext(ProductContext);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const fetchAllProducts = async () => {
     const result = await getProducts();
     setProducts(result);
+    setFilteredProducts(result); //initially set filteredproducts to all fetched products
   };
 
   useEffect(() => {
@@ -27,6 +29,13 @@ const Home = ({ navigation }) => {
     });
     fetchAllProducts();
   }, []);
+
+  useEffect(() => {
+    const filtered = products.filter(product =>
+      product.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  }, [searchQuery, products]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,13 +80,32 @@ const Home = ({ navigation }) => {
               <Text style={styles.viewAllText}>View All</Text>
             </Pressable>
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {products?.map(product =>
-              <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
-                <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
-              </Pressable>
-            )}
-          </ScrollView>
+          <View style={styles.sliderContainer}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.slider}>
+      {filteredProducts.slice(0, Math.ceil(filteredProducts.length / 2)).map(product =>
+        <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
+          <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
+        </Pressable>
+      )}
+    </ScrollView>
+  </View>
+ 
+  <View style={styles.spacing} />
+  <View style={styles.sectionHeader}>
+            <Text style={styles.sectionHeaderText}>Featured Product</Text>
+            <Pressable onPress={() => navigation.navigate("productlistscreen")}>
+              <Text style={styles.viewAllText}>View All</Text>
+            </Pressable>
+          </View>
+  <View style={styles.sliderContainer}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.slider}>
+      {filteredProducts.slice(Math.ceil(filteredProducts.length / 2)).map(product =>
+        <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
+          <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
+        </Pressable>
+      )}
+    </ScrollView>
+  </View>
         </View>
         <AuthenticationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       </ScrollView>
@@ -89,7 +117,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  }, 
+  sliderContainer: {
+    paddingTop: 10, // Adjust top padding as needed
+    paddingBottom: 10, // Adjust bottom padding as needed
   },
+  slider: {
+    marginTop: 10, // Adjust spacing between the two sliders
+  },
+  spacing: {
+    width: 10, // Adjust the space between the two ScrollView components
+  },
+
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -154,6 +193,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+    marginTop: 10,
   },
   sectionHeaderText: {
     fontSize: 20,

@@ -8,7 +8,7 @@ import { getCartItems } from "../features/firebase/cart";
 import AuthContext from "../features/authContext";
 
 const Cart = ({ navigation }) => {
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState("0.00");
   const { currentUser, isLoggedIn } = useContext(AuthContext);
   const { cartItems, setCartItems } = useContext(CartContext);
 
@@ -24,7 +24,6 @@ const Cart = ({ navigation }) => {
     const res = await getCartItems();
     if (res.success === true) {
       setCartItems(res.data);
-      setTotal(res.subTotal);
       calculateTotalAmount(res.data);
     }
   };
@@ -34,7 +33,14 @@ const Cart = ({ navigation }) => {
       headerShown: false,
     });
     fetchCartItems();
-  }, [currentUser, cartItems?.length, cartItems, getCartItems]);
+  }, [currentUser, isLoggedIn]);
+
+  // Listen for changes in cartItems context
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchCartItems();
+    }
+  }, [cartItems, isLoggedIn]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,9 +49,9 @@ const Cart = ({ navigation }) => {
       </View>
       {isLoggedIn ? (
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          {cartItems?.map((item) => (
+          {cartItems?.map((item, index) => (
             <CartItem
-              key={item.id}
+              key={`${item.id}-${index}`}
               id={item.id}
               title={item.title}
               brand={item.brand}

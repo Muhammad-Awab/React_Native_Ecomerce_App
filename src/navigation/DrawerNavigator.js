@@ -1,102 +1,66 @@
 import * as React from 'react';
-import { StyleSheet, Text, Button, View, Pressable, ToastAndroid, TouchableOpacity } from 'react-native';
-import { CartStackNavigator, AccountStackNavigator, MainStackNavigator, OrderStackNavigator, ProfileStackNavigator } from './StackNavigator'
+import { useEffect, useContext, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, ToastAndroid } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AuthContext from '../features/authContext';
+import { logout } from '../features/firebase/userAuth';
+import { CartStackNavigator, AccountStackNavigator, MainStackNavigator, OrderStackNavigator, ProfileStackNavigator } from './StackNavigator'
 
+import AuthenticationModal from "../components/AuthenticationModal";
 
-import { useContext } from "react";
-import AuthContext from "../features/authContext";
-import { logout } from "../features/firebase/userAuth";
+import HomeScreen from '../screens/HomeScreen'; // Import your HomeScreen component
+import AccountScreen from '../screens/AccountScreen'; // Import your AccountScreen component
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
-// const DrawerNavigator = () => {
-//     return (
-//         <Drawer.Navigator initialRouteName="Home">
-//             <Drawer.Screen name="Main" component={TabNavigator} />
-//         </Drawer.Navigator>
-//     );
-// }
-
-// const DrawerNavigator = () => {
-//     return (
-//         <Drawer.Navigator initialRouteName="Home">
-//             <Drawer.Screen name="Main" component={TabNavigator} />
-//             {/* Add a custom drawer item for logout */}
-//             <Drawer.Screen
-//                 name="Logout"
-//                 component={LogoutScreen}
-//                 options={{
-//                     drawerLabel: 'Logout',
-//                     drawerIcon: ({ color, size }) => (
-//                         <MaterialIcons name="exit-to-app" size={size} color={color} />
-//                     ),
-//                 }}
-//             />
-//         </Drawer.Navigator>
-//     );
-// }
-
-// // Screen for handling logout
-// const LogoutScreen = ({ navigation }) => { // Pass navigation prop
-//     const { setIsLoggedIn, setCurrentUser } = useContext(AuthContext);
-
-//     const handleLogout = async () => {
-//         // Your logout logic here
-//         setIsLoggedIn(false);
-//         setCurrentUser(null);
-//         // Navigate to the initial route (assuming it's your login screen)
-//         navigation.navigate('homescreen'); // Replace 'Login' with your actual login screen route
-//     }
-
-//     return (
-//         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//             <TouchableOpacity onPress={handleLogout}>
-//                 <Text>Logout</Text>
-//             </TouchableOpacity>
-//         </View>
-//     );
-// }
-
-import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-
 function CustomDrawerContent(props) {
-    const { setIsLoggedIn, setCurrentUser } = useContext(AuthContext);
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const { isLoggedIn, setIsLoggedIn, setCurrentUser } = useContext(AuthContext);
 
     const handleLogout = async () => {
-        // Your logout logic here
         setIsLoggedIn(false);
         setCurrentUser(null);
-        // Navigate to the initial route (assuming it's your login screen)
-        props.navigation.navigate('homescreen'); // Replace 'Login' with your actual login screen route
+        props.navigation.navigate('homescreen');
+    };
 
-    }
+    const handleLogin = () => {
+        props.navigation.navigate('homescreen'); // replace 'AuthScreen' with the name of your authentication screen
+        setModalVisible(!modalVisible);
+    };
 
     return (
-        <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-            <DrawerItem
-                label="Logout"
-                onPress={handleLogout}
-                icon={({ color, size }) => (
-                    <MaterialIcons name="exit-to-app" size={size} color={color} />
-                )}
-            />
-        </DrawerContentScrollView>
+        <View style={styles.drawerContent}>
+            {isLoggedIn ? (
+                <Pressable onPress={handleLogout} style={styles.logoutButton}>
+                    <MaterialIcons name="exit-to-app" size={24} color="black" />
+                    <Text style={styles.logoutText}>Logout</Text>
+                </Pressable>
+            ) : (
+                <Pressable onPress={handleLogin} style={styles.loginButton}>
+                    <MaterialIcons name="login" size={24} color="black" />
+                    <Text style={styles.loginText}>Login</Text>
+                    <AuthenticationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+                </Pressable>
+            )}
+        </View>
     );
 }
 
 const DrawerNavigator = () => {
     return (
-        <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Navigator initialRouteName="Home" drawerContent={CustomDrawerContent}>
             <Drawer.Screen name="Smart E-comm" component={TabNavigator} />
+            <Drawer.Screen name="HomeScreen" component={HomeScreen} />
+            <Drawer.Screen name="Account" component={AccountScreen} />
         </Drawer.Navigator>
     );
-}
+};
+
 const TabNavigator = () => {
     return (
         <Tab.Navigator
@@ -144,14 +108,33 @@ const TabNavigator = () => {
             />
         </Tab.Navigator>
     );
-}
-
+};
 const App = () => {
     return (
         <NavigationContainer>
             <DrawerNavigator />
         </NavigationContainer>
     );
-}
+};
 
 export default App;
+
+const styles = StyleSheet.create({
+    drawerContent: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    logoutButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    logoutText: {
+        marginLeft: 10,
+    },
+});
+
+const HomeIcon = ({ color, size }) => <MaterialIcons name="home" size={size} color={color} />;
+const CartIcon = ({ color, size }) => <MaterialIcons name="shopping-cart" size={size} color={color} />;
+const OrderIcon = ({ color, size }) => <MaterialIcons name="list-alt" size={size} color={color} />;
+const ProfileIcon = ({ color, size }) => <MaterialIcons name="account-circle" size={size} color={color} />;

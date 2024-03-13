@@ -9,19 +9,28 @@ import {
   Dimensions,
   Pressable,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import AuthContext from "../features/authContext";
-import Logo from "../../assets/logo.png";
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from "../features/firebase/userAuth";
+// import * as ImagePicker from 'react-native-image-picker';
+// import { launchImageLibrary } from 'react-native-image-picker';
+
+import { ImagePicker } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
+
+
 
 const windowWidth = Dimensions.get('window').width;
 
 const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
   const [type, setType] = useState("login");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("123456");
+
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("123456789");
   const [loading, setLoading] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
 
   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
@@ -39,12 +48,35 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
   const handleRegister = async () => {
     setLoading(true);
     const res = await registerWithEmailAndPassword(name, email, password);
-    if (res.success === true) {
-      setCurrentUser({ name, email });
+    if (res && res.success === true) { // Check if res.success exists
+      setCurrentUser({ name, email, password });
       setModalVisible(false);
       setIsLoggedIn(true);
     }
     setLoading(false);
+  };
+
+
+  const selectProfilePic = () => {
+    const options = {
+      title: 'Select Profile Picture',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = { uri: response.uri };
+        setProfilePic(source);
+      }
+    });
+
   };
 
   useEffect(() => {
@@ -101,6 +133,12 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
           ) : (
             <>
               <Text style={styles.title}>Register</Text>
+              <TouchableOpacity onPress={selectProfilePic}>
+                <View style={styles.profilePicContainer}>
+                  {profilePic && <Image source={profilePic} style={styles.profilePic} />}
+                  <Text style={styles.profilePicText}>Select Profile Picture</Text>
+                </View>
+              </TouchableOpacity>
               <TextInput
                 style={styles.input}
                 value={name}
@@ -190,7 +228,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 5,
   },
+  profilePicContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  profilePic: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  profilePicText: {
+    marginTop: 5,
+  },
 });
 
 export default AuthenticationModal;
-

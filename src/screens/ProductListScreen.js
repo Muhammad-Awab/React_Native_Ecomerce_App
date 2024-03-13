@@ -22,7 +22,10 @@ const ProductListScreen = ({ navigation }) => {
       headerShown: true,
       headerTitle: "Products",
       headerLeft: () => (
-        <Pressable onPress={goBack} style={styles.headerButton}>
+        <Pressable
+          onPress={goBack}
+          className=" justify-center items-center h-10 w-10 mx-4 rounded-full "
+        >
           <MaterialIcons name="chevron-left" size={34} color={"#111"} />
         </Pressable>
       ),
@@ -30,8 +33,8 @@ const ProductListScreen = ({ navigation }) => {
         backgroundColor: "white",
       },
       headerTitleAlign: "center",
-    });
-    fetchAllProducts();
+    }),
+      fetchAllProducts();
   }, []);
 
   return (
