@@ -1,17 +1,20 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View, Image, Pressable, ToastAndroid } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { removeItemById } from "../features/firebase/cart";
-import CartContext from "../features/cartContext";
+import { removeItemById } from "../features/firebase/cart"; // Importing function to remove item from cart
+import CartContext from "../features/cartContext"; // Importing cart context
 
+// CartItem component
 const CartItem = ({ title, image, price, brand, qty, id }) => {
-  const { setCartItems } = useContext(CartContext);
+  const { setCartItems } = useContext(CartContext); // Getting setCartItems function from cart context
 
+  // Function to remove item from cart
   const removeItem = async () => {
-    const res = await removeItemById(id);
-    if (res.success === true) {
+    const res = await removeItemById(id); // Calling removeItemById function with item id
+    if (res.success === true) { // If item removal is successful
+      // Show toast notification for successful removal
       ToastAndroid.show("Removed Successfully", ToastAndroid.BOTTOM);
-      setCartItems(res.data);
+      setCartItems(res.data); // Update cart items with new data after removal
     }
   };
 
@@ -26,7 +29,7 @@ const CartItem = ({ title, image, price, brand, qty, id }) => {
             <Text style={styles.title} numberOfLines={1}>{title}</Text>
             <Text style={styles.brand}>{brand}</Text>
             <Text style={styles.qty}>Qty: {qty}</Text>
-            <Text style={styles.price}>${price}</Text>
+            <Text style={styles.price}>£{price}</Text>
           </View>
           <Pressable onPress={removeItem} style={styles.removeButton}>
             <MaterialIcons name="delete-outline" size={20} />
@@ -39,6 +42,7 @@ const CartItem = ({ title, image, price, brand, qty, id }) => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,

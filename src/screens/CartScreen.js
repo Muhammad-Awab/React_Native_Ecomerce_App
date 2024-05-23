@@ -7,11 +7,13 @@ import CartContext from "../features/cartContext";
 import { getCartItems } from "../features/firebase/cart";
 import AuthContext from "../features/authContext";
 
+// Functional component representing the Cart screen
 const Cart = ({ navigation }) => {
-  const [total, setTotal] = useState("0.00");
-  const { currentUser, isLoggedIn } = useContext(AuthContext);
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const [total, setTotal] = useState("0.00"); // State to manage the total price of items in the cart
+  const { currentUser, isLoggedIn } = useContext(AuthContext); // Accessing current user and login status through context
+  const { cartItems, setCartItems } = useContext(CartContext); // Accessing cart items and setter function through context
 
+  // Function to calculate total amount based on cart items
   const calculateTotalAmount = async (data) => {
     const subTotal = await data.reduce(
       (acc, item) => acc + Number(item.price) * Number(item.qty),
@@ -20,6 +22,7 @@ const Cart = ({ navigation }) => {
     setTotal(subTotal.toFixed(2));
   };
 
+  // Function to fetch cart items from Firebase
   const fetchCartItems = async () => {
     const res = await getCartItems();
     if (res.success === true) {
@@ -28,6 +31,7 @@ const Cart = ({ navigation }) => {
     }
   };
 
+  // Effect hook to set navigation options and fetch cart items on component mount
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -35,7 +39,7 @@ const Cart = ({ navigation }) => {
     fetchCartItems();
   }, [currentUser, isLoggedIn]);
 
-  // Listen for changes in cartItems context
+  // Effect hook to fetch cart items when there are changes in cartItems context
   useEffect(() => {
     if (isLoggedIn) {
       fetchCartItems();
@@ -51,7 +55,7 @@ const Cart = ({ navigation }) => {
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {cartItems?.map((item, index) => (
             <CartItem
-              key={`${item.id}-${index}`}
+              key={`£{item.id}-£{index}`}
               id={item.id}
               title={item.title}
               brand={item.brand}
@@ -73,6 +77,7 @@ const Cart = ({ navigation }) => {
   );
 };
 
+// Styles for components
 const styles = StyleSheet.create({
   container: {
     flex: 1,

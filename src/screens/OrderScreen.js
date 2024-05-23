@@ -6,10 +6,13 @@ import { getAllOrderItems } from "../features/firebase/order";
 import OrderContext from "../features/orderContext";
 import AuthContext from "../features/authContext";
 
+// Order screen component
 const OrderScreen = ({ navigation }) => {
-  const { orders, setOrders } = useContext(OrderContext);
-  const { currentUser, isLoggedIn } = useContext(AuthContext);
+  // State and context variables
+  const { orders, setOrders } = useContext(OrderContext); // Order context
+  const { currentUser, isLoggedIn } = useContext(AuthContext); // Authentication context
 
+  // Function to fetch all orders from database
   const fetchAllOrders = async () => {
     const res = await getAllOrderItems();
     if (res.success === true) {
@@ -17,6 +20,7 @@ const OrderScreen = ({ navigation }) => {
     }
   };
 
+  // Effect hook to fetch all orders on component mount and when user changes
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -24,7 +28,7 @@ const OrderScreen = ({ navigation }) => {
     fetchAllOrders();
   }, [currentUser, isLoggedIn]);
 
-  // Listen for changes in orders context
+  // Listen for changes in orders context and fetch orders if user is logged in
   useEffect(() => {
     if (isLoggedIn) {
       fetchAllOrders();
@@ -33,14 +37,17 @@ const OrderScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header Section */}
       <View style={styles.header}>
         <Text style={styles.headerText}>My Orders</Text>
       </View>
+      {/* Display orders if user is logged in */}
       {isLoggedIn ? (
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {/* Map through orders and display order items */}
           {orders?.map((order, index) => (
             <OrderItem
-              key={`${order.orderId}-${index}`} // Combine orderId with index
+              key={`£{order.orderId}-£{index}`} // Combine orderId with index
               brand={order.brand}
               qty={order.qty}
               title={order.title}
@@ -60,6 +67,7 @@ const OrderScreen = ({ navigation }) => {
   );
 };
 
+// Styles for components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -88,3 +96,4 @@ const styles = StyleSheet.create({
 });
 
 export default OrderScreen;
+

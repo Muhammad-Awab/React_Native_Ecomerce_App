@@ -5,18 +5,18 @@ import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Mobile app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDyEmVnm2wCTUsdQQ9crMAMm6Z1dAsjpuY",
-  authDomain: "react-native-ecomerce.firebaseapp.com",
-  projectId: "react-native-ecomerce",
-  storageBucket: "react-native-ecomerce.appspot.com",
-  messagingSenderId: "1012020602766",
-  appId: "1:1012020602766:web:9b07978c333c45e83166df"
+  apiKey: "AIzaSyDriMNnH5zVsYUg8FppUZuVozpQ6bj6ZOw",
+  authDomain: "ecomerceapp-883e4.firebaseapp.com",
+  projectId: "ecomerceapp-883e4",
+  storageBucket: "ecomerceapp-883e4.appspot.com",
+  messagingSenderId: "60012129331",
+  appId: "1:60012129331:web:b228dd0913974467980746"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
 const db = getFirestore(app)
-export { auth, app, db }
+export { auth, app, db } // Export the authentication instance, Firebase app instance, and Firestore database instance

@@ -10,19 +10,23 @@ import AuthContext from "../features/authContext";
 import ProductContext from "../features/productContext";
 import { getProducts } from "../features/firebase/product";
 
+// Home screen component
 const Home = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const { isLoggedIn, currentUser } = useContext(AuthContext);
-  const { products, setProducts } = useContext(ProductContext);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  // State variables
+  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
+  const { isLoggedIn, currentUser } = useContext(AuthContext); // Authentication context
+  const { products, setProducts } = useContext(ProductContext); // Product context
+  const [searchQuery, setSearchQuery] = useState(''); // Search query state
+  const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products based on search
 
+  // Function to fetch all products from database
   const fetchAllProducts = async () => {
     const result = await getProducts();
-    setProducts(result);
-    setFilteredProducts(result); //initially set filteredproducts to all fetched products
+    setProducts(result); 
+    setFilteredProducts(result); // Initially set filtered products to all fetched products
   };
 
+  // Effect hook to fetch all products on component mount
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -30,6 +34,7 @@ const Home = ({ navigation }) => {
     fetchAllProducts();
   }, []);
 
+  // Effect hook to filter products based on search query
   useEffect(() => {
     const filtered = products.filter(product =>
       product.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -40,6 +45,7 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        {/* Header Section */}
         <View style={styles.header}>
           <View>
             <Text style={styles.welcomeText}>
@@ -47,6 +53,7 @@ const Home = ({ navigation }) => {
             </Text>
             <Text style={styles.appName}>Our Fashion App</Text>
           </View>
+          {/* Login button if user is not logged in */}
           {!isLoggedIn && (
             <Pressable onPress={() => setModalVisible(!modalVisible)} style={styles.loginButton}>
               <Image
@@ -57,7 +64,8 @@ const Home = ({ navigation }) => {
             </Pressable>
           )}
         </View>
-
+        
+        {/* Search bar */}
         <View style={styles.searchContainer}>
           <MaterialIcons name="search" size={24} color={"#111"} />
           <TextInput
@@ -69,10 +77,12 @@ const Home = ({ navigation }) => {
           />
         </View>
 
+        {/* Offer Section */}
         <View style={styles.offerSection}>
           <OfferCard />
         </View>
 
+        {/* New Arrival Section */}
         <View style={styles.newArrivalsSection}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionHeaderText}>New Arrivals</Text>
@@ -81,6 +91,7 @@ const Home = ({ navigation }) => {
             </Pressable>
           </View>
           <View style={styles.sliderContainer}>
+    {/* Horizontal ScrollView for new arrivals */}
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.slider}>
       {filteredProducts.slice(0, Math.ceil(filteredProducts.length / 2)).map(product =>
         <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
@@ -89,7 +100,8 @@ const Home = ({ navigation }) => {
       )}
     </ScrollView>
   </View>
- 
+
+  {/* Featured Product Section */}
   <View style={styles.spacing} />
   <View style={styles.sectionHeader}>
             <Text style={styles.sectionHeaderText}>Featured Product</Text>
@@ -97,7 +109,9 @@ const Home = ({ navigation }) => {
               <Text style={styles.viewAllText}>View All</Text>
             </Pressable>
           </View>
+  
   <View style={styles.sliderContainer}>
+    {/* Horizontal ScrollView for featured products */}
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.slider}>
       {filteredProducts.slice(Math.ceil(filteredProducts.length / 2)).map(product =>
         <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen", { productId: product.id })}>
@@ -107,26 +121,28 @@ const Home = ({ navigation }) => {
     </ScrollView>
   </View>
         </View>
+        {/* Authentication Modal */}
         <AuthenticationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
+// Styles for components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   }, 
-  sliderContainer: {
-    paddingTop: 10, // Adjust top padding as needed
-    paddingBottom: 10, // Adjust bottom padding as needed
+  sliderContainer: { 
+    paddingTop: 10, 
+    paddingBottom: 10, 
   },
-  slider: {
-    marginTop: 10, // Adjust spacing between the two sliders
+  slider: { 
+    marginTop: 10, 
   },
-  spacing: {
-    width: 10, // Adjust the space between the two ScrollView components
+  spacing: { 
+    width: 10, 
   },
 
   header: {

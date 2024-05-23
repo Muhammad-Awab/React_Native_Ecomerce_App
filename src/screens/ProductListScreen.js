@@ -5,18 +5,22 @@ import ProductItem from "../components/ProductItem";
 import ProductContext from "../features/productContext";
 import { getProducts } from "../features/firebase/product";
 
+// Screen to display list of products
 const ProductListScreen = ({ navigation }) => {
-  const { products, setProducts } = useContext(ProductContext);
+  const { products, setProducts } = useContext(ProductContext); // Context variables for products
 
+  // Function to fetch all products from database
   const fetchAllProducts = async () => {
     const result = await getProducts();
     setProducts(result);
   };
 
+  // Function to navigate back
   const goBack = () => {
     navigation.goBack();
   };
 
+  // Effect hook to set navigation options and fetch products on component mount
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -37,9 +41,11 @@ const ProductListScreen = ({ navigation }) => {
       fetchAllProducts();
   }, []);
 
+  // Render product list
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Map through products and display each product */}
         {products?.map((product) => (
           <Pressable
             key={product.id}
@@ -62,6 +68,7 @@ const ProductListScreen = ({ navigation }) => {
   );
 };
 
+// Styles for components
 const styles = {
   container: {
     flex: 1,
@@ -78,4 +85,3 @@ const styles = {
 };
 
 export default ProductListScreen;
-

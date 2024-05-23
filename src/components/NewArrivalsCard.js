@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 
+// NewArrivalsCard component
 const NewArrivalsCard = ({ title, brand, price, image }) => {
   return (
     <View style={styles.container}>
@@ -8,12 +9,12 @@ const NewArrivalsCard = ({ title, brand, price, image }) => {
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.brand}>{brand}</Text>
-        <Text style={styles.price}>${price}</Text>
+        <Text style={styles.price}>£{price}</Text>
       </View>
     </View>
   )
 }
-
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     maxWidth: 150,

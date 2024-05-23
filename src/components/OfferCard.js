@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import React from "react";
 import Suit from "../../assets/suit.png";
 
+// OfferCard component
 const OfferCard = () => {
   return (
     <View style={styles.container}>
@@ -20,6 +21,7 @@ const OfferCard = () => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",

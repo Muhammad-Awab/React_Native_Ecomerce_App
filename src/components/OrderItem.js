@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 
+// OrderItem component
 const OrderItem = ({ orderId, title, image, brand, date, price, qty }) => {
   return (
     <View style={styles.container}>
@@ -15,12 +16,13 @@ const OrderItem = ({ orderId, title, image, brand, date, price, qty }) => {
         <Text style={styles.info}>OrderID: <Text style={styles.orderId}>#{orderId}</Text></Text>
       </View>
       <View style={styles.priceContainer}>
-        <Text style={styles.price}>${price}</Text>
+        <Text style={styles.price}>£{price}</Text>
       </View>
     </View>
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",

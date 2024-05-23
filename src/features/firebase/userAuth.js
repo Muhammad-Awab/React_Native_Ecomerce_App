@@ -1,76 +1,16 @@
-import { auth, db } from "../../../firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { getDoc, doc, setDoc } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, db } from "../../../firebase" // Import Firebase authentication and Firestore database
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth" // Import Firebase authentication functions
+import { getDoc, doc, setDoc } from "firebase/firestore" // Import Firestore functions for document operations
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Firebase storage functions
 
-
-// const registerWithEmailAndPassword = async(name,email,password) => {
-//     console.log(email,password,name)
-//     try {
-//         const res = await createUserWithEmailAndPassword(auth,email,password)
-//         const user=res.user;
-//         const userDocRef = doc(db,"users",user.uid)
-//         await setDoc(userDocRef,{
-//             uid:user.uid,
-//                 name,
-//                 email
-//         })
-//         return {success:true}
-//     } catch (error) {
-//         console.error(error)
-//     }
-// }
-
-// const registerWithEmailAndPassword = async (name, email, password, profilePic) => {
-//     try {
-//         const res = await createUserWithEmailAndPassword(auth, email, password);
-//         const user = res.user;
-
-//         // Upload profile picture to Firebase Storage
-//         const storage = getStorage();
-//         const profilePicRef = ref(storage, `profile_pictures/${user.uid}`);
-//         await uploadBytes(profilePicRef, profilePic);
-
-//         // Get download URL of the uploaded profile picture
-//         const profilePicUrl = await getDownloadURL(profilePicRef);
-
-//         // Save user data including profile picture URL to Firestore
-//         const userDocRef = doc(db, "users", user.uid);
-//         await setDoc(userDocRef, {
-//             uid: user.uid,
-//             name,
-//             email,
-//             profilePicUrl, // Save profile picture URL
-//         });
-
-//         return { success: true };
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
-
-// const loginWithEmailAndPassword = async (email, password) => {
-//     try {
-//         const res = await signInWithEmailAndPassword(auth, email, password)
-//         const userId = res.user.uid;
-//         const userRef = doc(db, "users", userId)
-//         const userDoc = await getDoc(userRef)
-//         return {
-//             success: true,
-//             user: userDoc.data()
-//         }
-//     } catch (err) {
-//         console.error(err)
-//     }
-// }
-
-
+// Function to register a new user with email and password
 const registerWithEmailAndPassword = async (name, email, password) => {
     console.log(email, password, name);
     try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
-        const user = res.user;
-        const userDocRef = doc(db, "users", user.uid);
+        const res = await createUserWithEmailAndPassword(auth, email, password); // Create user with email and password
+        const user = res.user; // Extract user data from the response
+        const userDocRef = doc(db, "users", user.uid); // Reference to the user document in Firestore
+        // Set user document data with user ID, name, and email
         await setDoc(userDocRef, {
             uid: user.uid,
             name,
@@ -83,26 +23,27 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     }
 };
 
-
+// Function to log in a user with email and password
 const loginWithEmailAndPassword = async (email, password) => {
     try {
-        const res = await signInWithEmailAndPassword(auth, email, password)
-        const userId = res.user.uid;
-        const userRef = doc(db, "users", userId)
-        const userDoc = await getDoc(userRef)
+        const res = await signInWithEmailAndPassword(auth, email, password) // Sign in user with email and password
+        const userId = res.user.uid; // Extract user ID from the response
+        const userRef = doc(db, "users", userId) // Reference to the user document in Firestore
+        const userDoc = await getDoc(userRef) // Get user document data from Firestore
         return {
             success: true,
-            user: userDoc.data()
+            user: userDoc.data() // Return success status along with user data
         }
     } catch (err) {
         console.error(err)
     }
 }
 
-
+// Function to log out the current user
 const logout = async () => {
-    await signOut(auth);
-    return { success: true }
+    await signOut(auth); // Sign out the current user
+    return { success: true } // Return success status
 }
 
+// Export login, logout, and register functions
 export { loginWithEmailAndPassword, logout, registerWithEmailAndPassword };

@@ -8,14 +8,17 @@ import { db } from '../../firebase';
 
 import { getDoc, doc } from "firebase/firestore";
 
+// Import icons for navigation options
 const account = require("../../assets/icon.png");
 const help = require("../../assets/icon.png");
 const notification = require("../../assets/icon.png");
 const setting = require("../../assets/icon.png");
 
+// Profile Screen component
 const ProfileScreen = ({ navigation }) => {
-    const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } = useContext(AuthContext); // Context variables for authentication
 
+    // Function to handle user logout
     const handleLogout = async () => {
         const res = await logout();
         if (res.success === true) {
@@ -25,8 +28,10 @@ const ProfileScreen = ({ navigation }) => {
         }
     };
 
+    // State variable to store profile picture URL
     const [profilePicUrl, setProfilePicUrl] = useState(null);
 
+    // Effect hook to fetch user's profile picture on component mount
     useEffect(() => {
         const fetchProfilePic = async () => {
             if (currentUser) {
@@ -40,6 +45,7 @@ const ProfileScreen = ({ navigation }) => {
         fetchProfilePic();
     }, [currentUser]);
 
+    // Render profile screen
     return (
         <SafeAreaView style={styles.container}>
             <View>
@@ -51,6 +57,7 @@ const ProfileScreen = ({ navigation }) => {
 
                 <View style={styles.buttonList}>
                     {isLoggedIn ? (
+                        // Render navigation buttons for authenticated user
                         <View style={styles.buttonSection}>
                             <TouchableOpacity style={styles.buttonArea} onPress={() => navigation.navigate('accountscreen')}>
                                 <Image source={account} style={styles.buttonIcon} />
@@ -77,13 +84,15 @@ const ProfileScreen = ({ navigation }) => {
                             <View style={styles.sp}></View>
                         </View>
                     ) : (
+                        // Render login prompt if user is not logged in
                         <View style={styles.buttonSection}>
                             <Text style={styles.buttonName}>Login to view your Profile!</Text>
                         </View>
                     )}
                 </View>
             </View>
-
+            
+             {/* Render logout button if user is logged in */}
             {isLoggedIn && (
                 <View style={styles.logoutButton}>
                     <Pressable onPress={handleLogout}>
@@ -95,6 +104,7 @@ const ProfileScreen = ({ navigation }) => {
     );
 };
 
+// Styles for components
 const styles = StyleSheet.create({
     container: {
         flex: 1,

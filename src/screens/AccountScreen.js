@@ -6,10 +6,12 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getIdTokenResult, updatePasswordInDatabase, initializeRecaptchaConfig, RecaptchaParameters, EmailAuthCredential, EmailAuthProvider } from 'firebase/auth';
 import { db } from '../../firebase';
 
+// Functional component for managing account details
 const AccountScreen = () => {
-    const { currentUser } = useContext(AuthContext);
-    const Spacer = ({ height }) => <View style={{ height }} />;
+    const { currentUser } = useContext(AuthContext); // Accessing current user data through context
+    const Spacer = ({ height }) => <View style={{ height }} />; // Custom spacer component for vertical spacing
 
+    // State variables for managing user details and error messages
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [age, setAge] = useState('');
@@ -19,6 +21,7 @@ const AccountScreen = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    // Fetching user details on component mount
     useEffect(() => {
         if (currentUser) {
             setName(currentUser.name || '');
@@ -41,6 +44,7 @@ const AccountScreen = () => {
         }
     }, [currentUser]);
 
+    // Function to handle saving changes to user details
     const handleSave = async () => {
         try {
             const userRef = doc(db, "users", currentUser.uid);
@@ -51,6 +55,7 @@ const AccountScreen = () => {
         }
     };
 
+     // Function to handle changing user password
     const handleChangePassword = async () => {
         const auth = getAuth();
         const user = auth.currentUser;
@@ -105,6 +110,7 @@ const AccountScreen = () => {
     );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
     container: {
         flex: 1,

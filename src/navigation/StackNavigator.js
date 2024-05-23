@@ -3,14 +3,16 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../screens/HomeScreen'
 import CartScreen from '../screens/CartScreen'
-import DetailScreen from '../screens/DetailScreen'
-import ProfileScreen from '../screens/ProfileScreen'
-import OrderScreen from '../screens/OrderScreen'
-import ProductListScreen from '../screens/ProductListScreen'
 import AccountScreen from '../screens/AccountScreen'
+import DetailScreen from '../screens/DetailScreen'
+import ProductListScreen from '../screens/ProductListScreen'
+import OrderScreen from '../screens/OrderScreen'
+import ProfileScreen from '../screens/ProfileScreen'
 
+// Create a stack navigator for managing navigation between screens
 const Stack = createStackNavigator()
 
+// MainStackNavigator: Navigator for main screens such as Home, Account, Product List, and Order
 const MainStackNavigator = () => {
     return (
         <Stack.Navigator
@@ -22,15 +24,18 @@ const MainStackNavigator = () => {
                 headerShown: false
             }}
         >
+             <Stack.Screen name='detailscreen' component={DetailScreen} />
             <Stack.Screen name='homescreen' component={HomeScreen} />
             <Stack.Screen name='accountscreen' component={AccountScreen} />
-            <Stack.Screen name='detailscreen' component={DetailScreen} />
-            <Stack.Screen name='orderscreen' component={DetailScreen} />
             <Stack.Screen name='productlistscreen' component={ProductListScreen} />
+            <Stack.Screen name='orderscreen' component={DetailScreen} />
+
+           
         </Stack.Navigator>
     )
 }
 
+// CartStackNavigator: Navigator for the Cart Screen
 const CartStackNavigator = () => {
     return (<Stack.Navigator
         initialRouteName='cart-screen'
@@ -46,6 +51,7 @@ const CartStackNavigator = () => {
     )
 }
 
+// ProfileStackNavigator: Navigator for the Profile Screen
 const ProfileStackNavigator = () => {
     return (
         <Stack.Navigator
@@ -57,11 +63,12 @@ const ProfileStackNavigator = () => {
                 headerShown: false
             }}
         >
-            <Stack.Screen name='profile-screen' component={ProfileScreen} />
+         <Stack.Screen name='profile-screen' component={ProfileScreen} />  
         </Stack.Navigator>
     )
 }
 
+// AccountStackNavigator: Navigator for the Account Screen
 const AccountStackNavigator = () => {
     return (<Stack.Navigator
         initialRouteName='accountscreen'
@@ -77,6 +84,7 @@ const AccountStackNavigator = () => {
     )
 }
 
+// OrderStackNavigator: Navigator for the Order Screen
 const OrderStackNavigator = () => {
     return (
         <Stack.Navigator
@@ -92,5 +100,5 @@ const OrderStackNavigator = () => {
         </Stack.Navigator>
     )
 }
-
+// Export the navigation stacks to be used in the application
 export { MainStackNavigator, AccountStackNavigator, CartStackNavigator, ProfileStackNavigator, OrderStackNavigator }
